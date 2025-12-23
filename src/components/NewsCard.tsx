@@ -27,17 +27,17 @@ export const NewsCard = ({ headline, summary, source, category, imageUrl, index 
             <img
               src={imageUrl}
               alt={headline}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-            <Badge className="absolute bottom-3 left-3" variant="secondary">
+            <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
+            <Badge className="absolute bottom-3 left-3 backdrop-blur-sm" variant="outline">
               {category}
             </Badge>
           </div>
         )}
         <CardHeader className={!imageUrl ? "pb-3" : ""}>
           {!imageUrl && (
-            <Badge className="mb-2 w-fit" variant="secondary">
+            <Badge className="mb-2 w-fit" variant="default">
               {category}
             </Badge>
           )}
