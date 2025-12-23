@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { NewsCard } from "@/components/NewsCard";
+import { NewsCardSkeleton } from "@/components/NewsCardSkeleton";
 import { Button } from "@/components/ui/button";
 import { Filter, Grid, List } from "lucide-react";
 
@@ -75,6 +76,14 @@ const allNews = [
 const TrendingNews = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, [selectedCategory]);
 
   const filteredNews = selectedCategory === "All"
     ? allNews
@@ -137,13 +146,18 @@ const TrendingNews = () => {
             ? "grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
             : "flex flex-col gap-4"
         }>
-          {filteredNews.map((news, index) => (
-            <NewsCard key={index} {...news} index={index} />
-          ))}
+          {isLoading
+            ? Array.from({ length: 6 }).map((_, index) => (
+                <NewsCardSkeleton key={index} index={index} />
+              ))
+            : filteredNews.map((news, index) => (
+                <NewsCard key={index} {...news} index={index} />
+              ))
+          }
         </div>
 
         {/* Empty State */}
-        {filteredNews.length === 0 && (
+        {!isLoading && filteredNews.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 text-center">
             <p className="text-lg text-muted-foreground">No news found in this category.</p>
             <Button
